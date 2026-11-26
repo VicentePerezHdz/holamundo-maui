@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- x:DataType activa los "compiled bindings": el compilador revisa que cada propiedad exista. -->
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:core="clr-namespace:HolaMundo.Core;assembly=HolaMundo.Core"
+             x:Class="HolaMundo.Maui.MainPage"
+             x:DataType="core:MainViewModel"
+             Title="Hola Mundo MAUI">
+
+    <ContentPage.Resources>
+        <Style x:Key="Tarjeta" TargetType="Border">
+            <Setter Property="Stroke" Value="#DCDFE4" />
+            <Setter Property="StrokeShape" Value="RoundRectangle 8" />
+            <Setter Property="Padding" Value="16" />
+            <Setter Property="BackgroundColor" Value="White" />
+        </Style>
+        <Style x:Key="Titulo" TargetType="Label">
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="TextColor" Value="#512BD4" />
+        </Style>
+        <!-- Mensaje verde por defecto; el DataTrigger lo pinta de rojo cuando la propiedad bool es true. -->
+        <Style x:Key="Exito" TargetType="Label">
+            <Setter Property="TextColor" Value="#11663A" />
+            <Setter Property="FontAttributes" Value="Bold" />
+        </Style>
+    </ContentPage.Resources>
+
+    <ScrollView BackgroundColor="#F4F5F7">
+        <VerticalStackLayout Padding="16" Spacing="12">
+
+            <!-- 1. Saludo: input de texto -->
+            <Border Style="{StaticResource Tarjeta}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="1. Saludo (input texto)" Style="{StaticResource Titulo}" SemanticProperties.HeadingLevel="Level2" />
+                    <Entry Placeholder="Escribe tu nombre" Text="{Binding Nombre}" SemanticProperties.Description="Nombre" />
+                    <Button Text="Saludar" Command="{Binding SaludarCommand}" BackgroundColor="#512BD4" />
+                    <Label Text="{Binding MensajeSaludo}" Style="{StaticResource Exito}">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label" Binding="{Binding SaludoEsError}" Value="True">
+                                <Setter Property="TextColor" Value="#B00020" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- 2. Calculadora -->
+            <Border Style="{StaticResource Tarjeta}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="2. Calculadora" Style="{StaticResource Titulo}" SemanticProperties.HeadingLevel="Level2" />
+                    <Grid ColumnDefinitions="*,Auto,*" ColumnSpacing="8">
+                        <Entry Grid.Column="0" Text="{Binding NumeroA}" Keyboard="Numeric" SemanticProperties.Description="Número A" />
+                        <Picker Grid.Column="1" ItemsSource="{Binding SimbolosOperacion}" SelectedIndex="{Binding IndiceOperacion}"
+                                WidthRequest="60" SemanticProperties.Description="Operación" />
+                        <Entry Grid.Column="2" Text="{Binding NumeroB}" Keyboard="Numeric" SemanticProperties.Description="Número B" />
+                    </Grid>
+                    <Button Text="Calcular" Command="{Binding CalcularCommand}" BackgroundColor="#512BD4" />
+                    <Label Text="{Binding ResultadoCalculo}" Style="{StaticResource Exito}">
+                        <Label.Triggers>
+                            <DataTrigger TargetType="Label" Binding="{Binding CalculoEsError}" Value="True">
+                                <Setter Property="TextColor" Value="#B00020" />
+                            </DataTrigger>
+                        </Label.Triggers>
+                    </Label>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- 3. Combobox (Picker) con mensaje -->
+            <Border Style="{StaticResource Tarjeta}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="3. Combobox con mensaje" Style="{StaticResource Titulo}" SemanticProperties.HeadingLevel="Level2" />
+                    <ActivityIndicator IsRunning="{Binding Cargando}" IsVisible="{Binding Cargando}" />
+                    <Picker Title="Elige un lenguaje" ItemsSource="{Binding Lenguajes}"
+                            SelectedItem="{Binding LenguajeSeleccionado}" SemanticProperties.Description="Lenguaje" />
+                    <Label Text="{Binding MensajeLenguaje}" Style="{StaticResource Exito}" />
+                </VerticalStackLayout>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

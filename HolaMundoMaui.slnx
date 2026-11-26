@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="HolaMundo.Core.Tests/HolaMundo.Core.Tests.csproj" />
+  <Project Path="HolaMundo.Core/HolaMundo.Core.csproj" />
+  <Project Path="HolaMundo.Maui/HolaMundo.Maui.csproj" />
+</Solution>
